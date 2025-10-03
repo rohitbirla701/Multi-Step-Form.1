@@ -1,11 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import Step1Basic from '@/components/MultiStepForm.tsx/Step1Basic';
-import Step2Profile from '@/components/MultiStepForm.tsx/Step2Profile';
-import Step3Address from '@/components/MultiStepForm.tsx/Step3Address';
-import Step4Preview from '@/components/MultiStepForm.tsx/Step4Preview';
-import ProgressBar from '@/components/MultiStepForm.tsx/ProgressBar';
+import Step1Basic from '@/components/MultiStepForm/Step1Basic';
+import Step2Profile from '@/components/MultiStepForm/Step2Profile';
+import Step3Address from '@/components/MultiStepForm/Step3Address';
+import Step4Preview from '@/components/MultiStepForm/Step4Preview';
+import ProgressBar from '@/components/MultiStepForm/ProgressBar';
 
 const MultiStepFormPage: React.FC = () => {
   const step = useSelector((state: RootState) => state.form.step);
