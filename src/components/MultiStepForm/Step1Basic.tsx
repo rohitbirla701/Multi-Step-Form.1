@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState, setFormData, nextStep } from "@/store";
-import { addressData } from "@/utils/addressData";
-import { step1Schema } from "@/utils/validationSchema";
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState, setFormData, nextStep } from '@/store';
+import { addressData } from '@/utils/addressData';
+import { step1Schema } from '@/utils/validationSchema';
 
 const Step1Basic: React.FC = () => {
   const dispatch = useDispatch();
@@ -22,30 +22,24 @@ const Step1Basic: React.FC = () => {
     defaultValues: formData,
   });
 
-  // Watch country changes
-  const selectedCountry = watch("country") || formData.country || "";
-  const [dialCode, setDialCode] = useState(formData.countryCode || "+91");
+  const selectedCountry = watch('country') || formData.country || '';
+  const [dialCode, setDialCode] = useState(formData.countryCode || '+91');
 
-  // ✅ Keep country & dial code in sync
   useEffect(() => {
     if (selectedCountry) {
-      const newCode = addressData.countryDialCodes[selectedCountry] || "+91";
+      const newCode = addressData.countryDialCodes[selectedCountry] || '+91';
       setDialCode(newCode);
-      setValue("countryCode", newCode);
-
-      // ✅ Update Redux instantly on country change
+      setValue('countryCode', newCode);
       const updatedData = { ...getValues(), country: selectedCountry, countryCode: newCode };
       dispatch(setFormData(updatedData));
 
-      // ✅ Also update localStorage
-      localStorage.setItem("formData", JSON.stringify(updatedData));
+      localStorage.setItem('formData', JSON.stringify(updatedData));
     }
   }, [selectedCountry, setValue, dispatch, getValues]);
 
-  // ✅ When user submits
   const onSubmit = (data: any) => {
     dispatch(setFormData(data));
-    localStorage.setItem("formData", JSON.stringify(data));
+    localStorage.setItem('formData', JSON.stringify(data));
     dispatch(nextStep());
   };
 
@@ -53,25 +47,25 @@ const Step1Basic: React.FC = () => {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div>
         <label>Full Name</label>
-        <input {...register("fullName")} className="w-full border px-3 py-2 rounded-lg" />
+        <input {...register('fullName')} className="w-full border px-3 py-2 rounded-lg" />
         {errors.fullName && <p className="text-red-500">{errors.fullName.message as string}</p>}
       </div>
 
       <div>
         <label>Username</label>
-        <input {...register("username")} className="w-full border px-3 py-2 rounded-lg" />
+        <input {...register('username')} className="w-full border px-3 py-2 rounded-lg" />
         {errors.username && <p className="text-red-500">{errors.username.message as string}</p>}
       </div>
 
       <div>
         <label>Email</label>
-        <input type="email" {...register("email")} className="w-full border px-3 py-2 rounded-lg" />
+        <input type="email" {...register('email')} className="w-full border px-3 py-2 rounded-lg" />
         {errors.email && <p className="text-red-500">{errors.email.message as string}</p>}
       </div>
 
       <div>
         <label>Country</label>
-        <select {...register("country")} className="w-full border px-3 py-2 rounded-lg">
+        <select {...register('country')} className="w-full border px-3 py-2 rounded-lg">
           <option value="">Select Country</option>
           {addressData.countries.map((c) => (
             <option key={c} value={c}>
@@ -93,7 +87,7 @@ const Step1Basic: React.FC = () => {
           />
           <input
             type="tel"
-            {...register("mobile")}
+            {...register('mobile')}
             className="flex-1 border px-3 py-2 rounded-r-lg"
           />
         </div>
@@ -102,7 +96,7 @@ const Step1Basic: React.FC = () => {
 
       <div>
         <label>Gender</label>
-        <select {...register("gender")} className="w-full border px-3 py-2 rounded-lg">
+        <select {...register('gender')} className="w-full border px-3 py-2 rounded-lg">
           <option value="">Select Gender</option>
           <option value="male">Male</option>
           <option value="female">Female</option>
