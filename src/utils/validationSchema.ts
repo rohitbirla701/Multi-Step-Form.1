@@ -36,7 +36,7 @@ export const step3Schema = z.object({
     address1: z.string().min(3, "Address line 1 required"),
     address2: z.string().min(3, "Address line 2 required"),
     landmark: z.string().optional(),
-    zip: z.string().regex(/^\d{5,6}$/, "Valid ZIP required"),
+    zip: z.string().regex(/^[A-Za-z0-9]{3,10}$/, "Valid ZIP or Postal Code required"),
     state: z.string().min(1, "State required"),
     country: z.string().min(1, "Country required"),
 });
