@@ -1,18 +1,29 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState, prevStep, resetForm, updateFormField, uploadProfilePic } from "@/store";
-import { Pencil } from "lucide-react";
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  AppDispatch,
+  RootState,
+  prevStep,
+  resetForm,
+  updateFormField,
+  uploadProfilePic,
+} from '@/store';
+import { Pencil } from 'lucide-react';
 
 const Step4Preview: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { data: formData, uploading, profilePicUrl } = useSelector((state: RootState) => state.form);
+  const {
+    data: formData,
+    uploading,
+    profilePicUrl,
+  } = useSelector((state: RootState) => state.form);
 
   const [editingField, setEditingField] = useState<string | null>(null);
-  const [tempValue, setTempValue] = useState<string>("");
+  const [tempValue, setTempValue] = useState<string>('');
 
   const handleEdit = (field: string, value: string) => {
     setEditingField(field);
-    setTempValue(value || "");
+    setTempValue(value || '');
   };
 
   const handleSave = (field: string) => {
@@ -25,7 +36,7 @@ const Step4Preview: React.FC = () => {
     if (!file) return;
 
     const previewUrl = URL.createObjectURL(file);
-    dispatch(updateFormField({ field: "profilePic", value: previewUrl }));
+    dispatch(updateFormField({ field: 'profilePic', value: previewUrl }));
     dispatch(uploadProfilePic(file));
   };
 
@@ -46,49 +57,47 @@ const Step4Preview: React.FC = () => {
           </div>
         )}
         <label className="cursor-pointer text-blue-500 text-sm">
-          {uploading ? "Uploading..." : "Change Photo"}
+          {uploading ? 'Uploading...' : 'Change Photo'}
           <input type="file" accept="image/*" onChange={handleProfileChange} className="hidden" />
         </label>
       </div>
       <div className="bg-gray-100 p-4 rounded-lg space-y-3">
         {Object.entries(formData)
-          .filter(([key]) => key !== "profilePic")
+          .filter(([key]) => key !== 'profilePic')
           .map(([key, value]) => (
-            <div key={key} className="flex items-center justify-between">
-              <div>
-                <b>{key}:</b>{" "}
+            <div key={key} className="flex items-start justify-between flex-wrap">
+              <div className="flex-1 min-w-[120px]">
+                <b>{key}:</b>{' '}
                 {editingField === key ? (
                   <input
                     type="text"
                     value={tempValue}
                     onChange={(e) => setTempValue(e.target.value)}
-                    className="border rounded px-2 py-1"
+                    className="border rounded px-2 py-1 w-full"
                   />
                 ) : (
-                  <span>{String(value)}</span>
+                  <span className="break-words">{String(value)}</span>
                 )}
               </div>
               {editingField === key ? (
                 <button
                   onClick={() => handleSave(key)}
-                  className="text-green-600 text-sm ml-2"
+                  className="text-green-600 text-sm ml-2 mt-1"
                 >
                   Save
                 </button>
               ) : (
                 <Pencil
-                  className="w-4 h-4 text-blue-500 cursor-pointer"
+                  className="w-4 h-4 text-blue-500 cursor-pointer mt-1"
                   onClick={() => handleEdit(key, String(value))}
                 />
               )}
             </div>
           ))}
       </div>
+
       <div className="flex justify-between">
-        <button
-          onClick={() => dispatch(prevStep())}
-          className="px-6 py-2 bg-gray-300 rounded-lg"
-        >
+        <button onClick={() => dispatch(prevStep())} className="px-6 py-2 bg-gray-300 rounded-lg">
           Prev
         </button>
         <button

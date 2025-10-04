@@ -4,8 +4,8 @@ export const step1Schema = z.object({
     fullName: z.string().min(3, "Full name is required"),
     username: z
         .string()
-        .min(3, "Username is required")
-        .regex(/^\S*$/, "No spaces allowed"),
+        .min(3, "Username must be at least 3 characters")
+        .regex(/^[a-zA-Z0-9_]+$/, "Only letters, numbers, and underscores allowed"),
     email: z
         .string()
         .email("Invalid email")
@@ -19,7 +19,16 @@ export const step1Schema = z.object({
 
 export const step2Schema = z.object({
     bio: z.string().min(10, "At least 10 characters").max(200, "Max 200 chars"),
-    dob: z.string().regex(/^\d{2}-\d{2}-\d{4}$/, "Format DD-MM-YYYY"),
+    dob: z
+        .string()
+        .regex(/^\d{2}-\d{2}-\d{4}$/, "Format DD-MM-YYYY")
+        .refine((val) => {
+            const parts = val.split("-").map(Number);
+            const day = parts[0] || 1;
+            const month = (parts[1] || 1) - 1;
+            const year = parts[2] || 1900;
+            return year <= 2018;
+        }, "Date must be 2018 or earlier"),
     profilePic: z.string().min(1, "Profile picture required"),
 });
 
