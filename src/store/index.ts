@@ -5,7 +5,14 @@ import { authSlice } from './slices/authSlice';
 import { featureFlagsSlice } from './slices/featureFlagsSlice';
 import { uiSlice } from './slices/uiSlice';
 import { apiSlice } from './api/apiSlice';
-import formReducer, { setFormData, nextStep, prevStep, resetForm, updateFormField, uploadProfilePic } from './slices/formSlice';
+import formReducer, {
+  set_form_data,
+  next_step,
+  prev_step,
+  reset_form,
+  update_form_field,
+  upload_profile_pic
+} from './slices/formSlice';
 
 export const store = configureStore({
   reducer: {
@@ -33,4 +40,11 @@ export const { login, logout, setUser, setTokens, clearAuth } = authSlice.action
 export const { toggleFeatureFlag, setFeatureFlags } = featureFlagsSlice.actions;
 export const { setLoading, setError, clearError, setNotification, clearNotification } = uiSlice.actions;
 
-export { setFormData, nextStep, prevStep, resetForm, updateFormField, uploadProfilePic };
+export {
+  set_form_data,
+  next_step,
+  prev_step,
+  reset_form,
+  update_form_field,
+  upload_profile_pic
+};

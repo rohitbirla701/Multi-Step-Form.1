@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState, setFormData, nextStep, prevStep } from '@/store';
+import { RootState, set_form_data, next_step, prev_step } from '@/store';
 import { addressData } from '@/utils/addressData';
 import { step3Schema } from '@/utils/validationSchema';
 
@@ -41,7 +41,6 @@ const Step3Address: React.FC = () => {
   const selectedState = watch('state') || formData.state;
   const selectedCity = watch('city') || formData.city;
 
-  // Update states when country changes
   useEffect(() => {
     if (!selectedCountry) return;
     const statesList = addressData.statesByCountry[selectedCountry] || [];
@@ -73,8 +72,8 @@ const Step3Address: React.FC = () => {
   }, [selectedCity, setValue]);
 
   const onSubmit = (data: AddressForm) => {
-    dispatch(setFormData(data));
-    dispatch(nextStep());
+    dispatch(set_form_data(data));
+    dispatch(next_step());
   };
 
   return (
@@ -139,7 +138,7 @@ const Step3Address: React.FC = () => {
       <div className="flex justify-between">
         <button
           type="button"
-          onClick={() => dispatch(prevStep())}
+          onClick={() => dispatch(prev_step())}
           className="px-6 py-2 bg-gray-300 rounded-lg"
         >
           Prev

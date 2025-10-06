@@ -5,88 +5,98 @@ interface FormState {
   step: number;
   data: Record<string, any>;
   uploading: boolean;
-  profilePicUrl?: string | null;
+  profile_pic_url?: string | null;
 }
 
-export const uploadProfilePic = createAsyncThunk<string, File>(
-  "form/uploadProfilePic",
-  async (file: File, thunkAPI) => {
+export const upload_profile_pic = createAsyncThunk<string, File>(
+  "form/upload_profile_pic",
+  async (file: File, thunk_api) => {
     try {
-      const formData = new FormData();
-      formData.append("file", file);
+      const form_data = new FormData();
+      form_data.append("file", file);
 
-      const res = await apiClient.post("http://192.168.29.28:9001/upload", formData, {
+      const res = await apiClient.post("http://192.168.29.28:9001/upload", form_data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      if (res.data?.url) return res.data.url.replace("http://localhost:9001", "http://192.168.29.28:9001");
+      if (res.data?.url)
+        return res.data.url.replace("http://localhost:9001", "http://192.168.29.28:9001");
       return "";
     } catch (err: any) {
-      return thunkAPI.rejectWithValue(err.message || "Upload failed");
+      return thunk_api.rejectWithValue(err.message || "Upload failed");
     }
   }
 );
 
-const savedForm = localStorage.getItem("multiForm");
+const saved_form = localStorage.getItem("multi_form");
 
-const initialState: FormState = {
-  step: savedForm ? JSON.parse(localStorage.getItem("multiFormStep") || "1") : 1,
-  data: savedForm ? JSON.parse(savedForm) : {},
+const initial_state: FormState = {
+  step: saved_form ? JSON.parse(localStorage.getItem("multi_form_step") || "1") : 1,
+  data: saved_form ? JSON.parse(saved_form) : {},
   uploading: false,
-  profilePicUrl: savedForm ? JSON.parse(localStorage.getItem("multiFormProfilePic") || "null") : null,
+  profile_pic_url: saved_form
+    ? JSON.parse(localStorage.getItem("multi_form_profile_pic") || "null")
+    : null,
 };
 
-const formSlice = createSlice({
+const form_slice = createSlice({
   name: "form",
-  initialState,
+  initialState: initial_state,
   reducers: {
-    setFormData: (state, action: PayloadAction<any>) => {
+    set_form_data: (state, action: PayloadAction<any>) => {
       state.data = { ...state.data, ...action.payload };
-      localStorage.setItem("multiForm", JSON.stringify(state.data));
-      if (state.profilePicUrl) {
-        localStorage.setItem("multiFormProfilePic", JSON.stringify(state.profilePicUrl));
+      localStorage.setItem("multi_form", JSON.stringify(state.data));
+      if (state.profile_pic_url) {
+        localStorage.setItem("multi_form_profile_pic", JSON.stringify(state.profile_pic_url));
       }
     },
-    updateFormField: (state, action: PayloadAction<{ field: string; value: any }>) => {
+    update_form_field: (state, action: PayloadAction<{ field: string; value: any }>) => {
       state.data[action.payload.field] = action.payload.value;
-      localStorage.setItem("multiForm", JSON.stringify(state.data));
+      localStorage.setItem("multi_form", JSON.stringify(state.data));
     },
-    nextStep: (state) => {
+    next_step: (state) => {
       state.step += 1;
-      localStorage.setItem("multiFormStep", JSON.stringify(state.step));
+      localStorage.setItem("multi_form_step", JSON.stringify(state.step));
     },
-    prevStep: (state) => {
+    prev_step: (state) => {
       if (state.step > 1) state.step -= 1;
-      localStorage.setItem("multiFormStep", JSON.stringify(state.step));
+      localStorage.setItem("multi_form_step", JSON.stringify(state.step));
     },
-    resetForm: (state) => {
+    reset_form: (state) => {
       state.step = 1;
       state.data = {};
       state.uploading = false;
-      state.profilePicUrl = null;
-      localStorage.removeItem("multiForm");
-      localStorage.removeItem("multiFormStep");
-      localStorage.removeItem("multiFormProfilePic");
+      state.profile_pic_url = null;
+      localStorage.removeItem("multi_form");
+      localStorage.removeItem("multi_form_step");
+      localStorage.removeItem("multi_form_profile_pic");
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(uploadProfilePic.pending, (state) => {
+      .addCase(upload_profile_pic.pending, (state) => {
         state.uploading = true;
       })
-      .addCase(uploadProfilePic.fulfilled, (state, action) => {
+      .addCase(upload_profile_pic.fulfilled, (state, action) => {
         state.uploading = false;
-        state.profilePicUrl = action.payload;
-        state.data.profilePic = action.payload;
+        state.profile_pic_url = action.payload;
+        state.data.profile_pic = action.payload;
 
-        localStorage.setItem("multiForm", JSON.stringify(state.data));
-        localStorage.setItem("multiFormProfilePic", JSON.stringify(action.payload));
+        localStorage.setItem("multi_form", JSON.stringify(state.data));
+        localStorage.setItem("multi_form_profile_pic", JSON.stringify(action.payload));
       })
-      .addCase(uploadProfilePic.rejected, (state) => {
+      .addCase(upload_profile_pic.rejected, (state) => {
         state.uploading = false;
       });
   },
 });
 
-export const { setFormData, nextStep, prevStep, resetForm, updateFormField } = formSlice.actions;
-export default formSlice.reducer;
+export const {
+  set_form_data,
+  next_step,
+  prev_step,
+  reset_form,
+  update_form_field,
+} = form_slice.actions;
+
+export default form_slice.reducer;

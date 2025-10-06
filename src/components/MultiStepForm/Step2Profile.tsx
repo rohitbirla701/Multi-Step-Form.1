@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFormData, nextStep, prevStep, uploadProfilePic } from '@/store/slices/formSlice';
+import { set_form_data, next_step, prev_step, upload_profile_pic } from '@/store/slices/formSlice';
 import { AppDispatch, RootState } from '@/store';
 import { step2Schema } from '@/utils/validationSchema';
 import { z } from 'zod';
@@ -14,7 +14,7 @@ const Step2Profile: React.FC = () => {
   const {
     data: formData,
     uploading,
-    profilePicUrl,
+    profile_pic_url,
   } = useSelector((state: RootState) => state.form);
   const [localPreview, setLocalPreview] = useState<string | null>(null);
 
@@ -36,27 +36,27 @@ const Step2Profile: React.FC = () => {
     setLocalPreview(previewUrl);
 
     setValue('profilePic', previewUrl);
-    dispatch(setFormData({ ...formData, profilePic: previewUrl }));
+    dispatch(set_form_data({ ...formData, profilePic: previewUrl }));
 
-    dispatch(uploadProfilePic(file));
+    dispatch(upload_profile_pic(file));
   };
 
   useEffect(() => {
-    if (profilePicUrl) {
-      setValue('profilePic', profilePicUrl);
-      dispatch(setFormData({ ...formData, profilePic: profilePicUrl }));
+    if (profile_pic_url) {
+      setValue('profilePic', profile_pic_url);
+      dispatch(set_form_data({ ...formData, profilePic: profile_pic_url }));
       setLocalPreview(null);
     }
-  }, [profilePicUrl]);
+  }, [profile_pic_url]);
 
   const onSubmit = (data: Step2Data) => {
-    const finalProfilePic = profilePicUrl || localPreview;
+    const finalProfilePic = profile_pic_url || localPreview;
     if (!finalProfilePic) {
       alert('Profile picture is required!');
       return;
     }
-    dispatch(setFormData({ ...data, profilePic: finalProfilePic }));
-    dispatch(nextStep());
+    dispatch(set_form_data({ ...data, profilePic: finalProfilePic }));
+    dispatch(next_step());
   };
 
   useEffect(() => {
@@ -65,7 +65,7 @@ const Step2Profile: React.FC = () => {
     };
   }, [localPreview]);
 
-  const profilePicToShow = profilePicUrl || localPreview;
+  const profilePicToShow = profile_pic_url || localPreview;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -114,7 +114,7 @@ const Step2Profile: React.FC = () => {
       <div className="flex justify-between mt-4">
         <button
           type="button"
-          onClick={() => dispatch(prevStep())}
+          onClick={() => dispatch(prev_step())}
           className="px-6 py-2 bg-gray-300 rounded-lg"
         >
           Prev

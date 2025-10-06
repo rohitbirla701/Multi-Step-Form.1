@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState, setFormData, nextStep } from '@/store';
+import { RootState, set_form_data,
+  next_step } from '@/store';
 import { addressData } from '@/utils/addressData';
 import { step1Schema } from '@/utils/validationSchema';
 
@@ -31,16 +32,16 @@ const Step1Basic: React.FC = () => {
       setDialCode(newCode);
       setValue('countryCode', newCode);
       const updatedData = { ...getValues(), country: selectedCountry, countryCode: newCode };
-      dispatch(setFormData(updatedData));
+      dispatch(set_form_data(updatedData));
 
       localStorage.setItem('formData', JSON.stringify(updatedData));
     }
   }, [selectedCountry, setValue, dispatch, getValues]);
 
   const onSubmit = (data: any) => {
-    dispatch(setFormData(data));
+    dispatch(set_form_data(data));
     localStorage.setItem('formData', JSON.stringify(data));
-    dispatch(nextStep());
+    dispatch(next_step());
   };
 
   return (

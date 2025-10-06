@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   AppDispatch,
   RootState,
-  prevStep,
-  resetForm,
-  updateFormField,
-  uploadProfilePic,
+  prev_step,
+  reset_form,
+  update_form_field,
+  upload_profile_pic,
 } from '@/store';
 import { Pencil } from 'lucide-react';
 
@@ -15,7 +15,7 @@ const Step4Preview: React.FC = () => {
   const {
     data: formData,
     uploading,
-    profilePicUrl,
+    profile_pic_url,
   } = useSelector((state: RootState) => state.form);
 
   const [editingField, setEditingField] = useState<string | null>(null);
@@ -27,7 +27,7 @@ const Step4Preview: React.FC = () => {
   };
 
   const handleSave = (field: string) => {
-    dispatch(updateFormField({ field, value: tempValue }));
+    dispatch(update_form_field({ field, value: tempValue }));
     setEditingField(null);
   };
 
@@ -36,11 +36,11 @@ const Step4Preview: React.FC = () => {
     if (!file) return;
 
     const previewUrl = URL.createObjectURL(file);
-    dispatch(updateFormField({ field: 'profilePic', value: previewUrl }));
-    dispatch(uploadProfilePic(file));
+    dispatch(update_form_field({ field: 'profilePic', value: previewUrl }));
+    dispatch(upload_profile_pic(file));
   };
 
-  const profilePicToShow = profilePicUrl || formData.profilePic || null;
+  const profilePicToShow = profile_pic_url || formData.profilePic || null;
 
   return (
     <div className="space-y-4">
@@ -97,11 +97,11 @@ const Step4Preview: React.FC = () => {
       </div>
 
       <div className="flex justify-between">
-        <button onClick={() => dispatch(prevStep())} className="px-6 py-2 bg-gray-300 rounded-lg">
+        <button onClick={() => dispatch(prev_step())} className="px-6 py-2 bg-gray-300 rounded-lg">
           Prev
         </button>
         <button
-          onClick={() => dispatch(resetForm())}
+          onClick={() => dispatch(reset_form())}
           className="px-6 py-2 bg-green-500 text-white rounded-lg"
         >
           Submit
