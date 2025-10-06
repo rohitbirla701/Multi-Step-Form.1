@@ -61,7 +61,7 @@ const Step4Preview: React.FC = () => {
           <input type="file" accept="image/*" onChange={handleProfileChange} className="hidden" />
         </label>
       </div>
-      <div className="bg-gray-100 p-4 rounded-lg space-y-3">
+      <div className="bg-gray-100 p-4 w-80 md:w-full rounded-lg space-y-3">
         {Object.entries(formData)
           .filter(([key]) => key !== 'profilePic')
           .map(([key, value]) => (
