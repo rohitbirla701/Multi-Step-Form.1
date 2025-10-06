@@ -15,12 +15,12 @@ export const upload_profile_pic = createAsyncThunk<string, File>(
       const form_data = new FormData();
       form_data.append("file", file);
 
-      const res = await apiClient.post("http://192.168.29.28:9001/upload", form_data, {
+      const res = await apiClient.post("https://0694857c54a5.ngrok-free.app/upload", form_data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
       if (res.data?.url)
-        return res.data.url.replace("http://localhost:9001", "http://192.168.29.28:9001");
+        return res.data.url.replace("http://localhost:9001", "https://0694857c54a5.ngrok-free.app");
       return "";
     } catch (err: any) {
       return thunk_api.rejectWithValue(err.message || "Upload failed");
