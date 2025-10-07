@@ -34,13 +34,13 @@ const Step1Basic: React.FC = () => {
       const updatedData = { ...getValues(), country: selectedCountry, countryCode: newCode };
       dispatch(set_form_data(updatedData));
 
-      localStorage.setItem('formData', JSON.stringify(updatedData));
+      sessionStorage.setItem('formData', JSON.stringify(updatedData));
     }
   }, [selectedCountry, setValue, dispatch, getValues]);
 
   const onSubmit = (data: any) => {
     dispatch(set_form_data(data));
-    localStorage.setItem('formData', JSON.stringify(data));
+    sessionStorage.setItem('formData', JSON.stringify(data));
     dispatch(next_step());
   };
 
